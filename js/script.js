@@ -1,30 +1,60 @@
-/*
-Treehouse Techdegree:
-FSJS Project 2 - Data Pagination and Filtering
-*/
+
+const studentList = document.querySelector(".student-list");
 
 
 
-/*
-For assistance:
-   Check out the "Project Resources" section of the Instructions tab: https://teamtreehouse.com/projects/data-pagination-and-filtering#instructions
-   Reach out in your Slack community: https://treehouse-fsjs-102.slack.com/app_redirect?channel=unit-2
-*/
+function createCard(data){
+
+   let studentCard = document.createElement("li");
+   studentCard.className ="student-item";
+   studentCard.className += " cf"
+
+
+   let studentDetails = document.createElement("div");
+   studentDetails.className="student-details";
+   studentCard.appendChild(studentDetails);
+
+   let studentImg = document.createElement("img");
+   studentImg.className="avatar";
+   studentImg.setAttribute("src",`${data.picture.large}`);
+   studentImg.setAttribute("alt","Profile Picture");
+   studentDetails.appendChild(studentImg);
+
+   let studentName = document.createElement("h3");
+   studentName.textContent = `${data.name.first} ${data.name.last}`;
+   studentDetails.appendChild(studentName);
+
+   let studentEmail = document.createElement("span");
+   studentEmail.className = "email";
+   studentEmail.textContent = `${data.email}`;
+   studentDetails.appendChild(studentEmail);
+
+   let joinedDetails = document.createElement("div");
+   joinedDetails.className="joined-details";
+
+
+   let joinedDate = document.createElement("span");
+   joinedDate.className="date";
+   joinedDate.textContent = `Joined ${data.registered.date}`
+   joinedDetails.appendChild(joinedDate);
+   studentCard.appendChild(joinedDetails)
+   
+   return studentCard;
+}
+
+function createCards(){
+
+   
+
+   for(let i = 0;i<9;i++){
+     studentList.appendChild(createCard(data[i]));
+
+   }
+
+   
+}
 
 
 
-/*
-Create the `showPage` function
-This function will create and insert/append the elements needed to display a "page" of nine students
-*/
 
-
-
-/*
-Create the `addPagination` function
-This function will create and insert/append the elements needed for the pagination buttons
-*/
-
-
-
-// Call functions
+createCards()
