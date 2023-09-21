@@ -4,13 +4,15 @@ const pageBtnsContainer = document.querySelector(".pagination");
 const pageHeader = document.querySelector(".header")
 const nameInpt = document.getElementById("search")
 const searchBtn = document.querySelector(".search-btn")
-
+const pageContainer = document.querySelector(".page")
+const modalContainer = document.querySelector(".modal-container")
 
 function createCard(data){
 
    let studentCard = document.createElement("li");
    studentCard.className ="student-item";
    studentCard.className += " cf"
+
 
 
    let studentDetails = document.createElement("div");
@@ -30,6 +32,7 @@ function createCard(data){
    let studentEmail = document.createElement("span");
    studentEmail.className = "email";
    studentEmail.textContent = `${data.email}`;
+   studentEmail.style.cursor="pointer";
    studentDetails.appendChild(studentEmail);
 
    let joinedDetails = document.createElement("div");
@@ -99,9 +102,9 @@ function findCardByName(name){
 
 
 function attachCards(arr){
-   studentList.innerHTML="";
+   pageContainer.innerHTML="";
    for(let i = 0;i<arr.length;i++){
-     studentList.appendChild(createCard(arr[i]));
+      pageContainer.appendChild(createCard(arr[i]));
 
    }
 }
@@ -117,6 +120,90 @@ function pagination(data,number,page){
 
 
 
+
+
+
+function checkModalCardByEmail(email){
+
+   for(let i = 0;i<data.length;i++){
+      if(data[i].email == email){
+         return true
+      }
+   }
+
+}
+
+function findModalCardByEmail(email){
+
+   card = [];
+
+   for(let i = 0;i<data.length;i++){
+      if(data[i].email == email){
+         card.push(data[i])
+      }
+   }
+   return card
+}
+
+
+
+
+
+
+function createModalCard(data){
+
+   let cardSection = document.createElement("section");
+   cardSection.className = "modal-card";
+
+   let studentList = document.createElement("li");
+   studentList.className = "student-item cf student-card-big"
+   cardSection.appendChild(studentList)
+
+   let studentDetails = document.createElement("div");
+   studentDetails.className="student-details";
+   studentList.appendChild(studentDetails);
+
+   let studentImg = document.createElement("img");
+   studentImg.className="avatar";
+   studentImg.setAttribute("src",`${data.picture.large}`);
+   studentImg.setAttribute("alt","Profile Picture");
+   studentDetails.appendChild(studentImg);
+
+   let studentName = document.createElement("h3");
+   studentName.textContent = `${data.name.first} ${data.name.last}`;
+   studentDetails.appendChild(studentName);
+
+   let studentEmail = document.createElement("span");
+   studentEmail.className = "email";
+   studentEmail.textContent = `${data.email}`;
+   studentDetails.appendChild(studentEmail);
+
+   let joinedDetails = document.createElement("div");
+   joinedDetails.className="joined-details";
+      studentList.appendChild(joinedDetails);
+
+   let joinedDate = document.createElement("span");
+   joinedDate.className="date";
+   joinedDate.textContent = `Joined ${data.registered.date}`
+   joinedDetails.appendChild(joinedDate);
+
+   let closeBtnContainer = document.createElement("button");
+   closeBtnContainer.className = "close-btn";
+   let closeBtn = document.createElement("i");
+   closeBtn.className = "fa-solid fa-x"
+   closeBtnContainer.appendChild(closeBtn)
+   cardSection.appendChild(closeBtnContainer)
+   return cardSection
+}
+
+
+function attachModalCard(arr){
+   modalContainer.innerHTML="";
+   for(let i = 0;i<arr.length;i++){
+      modalContainer.appendChild(createModalCard(arr[i]));
+
+   }
+}
 
 function attachPage(page){
    let arr = pagination(data,9,page);
@@ -148,6 +235,36 @@ searchBtn.addEventListener("click", ()=>{
    attachCards(students);
 
 })
+
+
+
+pageContainer.addEventListener("click",(e)=>{
+
+   let obj = e.target;
+   let studentEmail = obj.textContent
+   let student = findModalCardByEmail(studentEmail)
+   classes = obj.classList
+
+   if(checkModalCardByEmail(studentEmail)){
+      attachModalCard(student)
+      modalContainer.className += " transparent-background"
+   }
+
+   if(classes.contains("close-btn") || obj.parentNode.classList.contains("close-btn")){
+      attachModalCard("")
+      modalContainer.className -= " transparent-background"
+   }
+   
+
+})
+
+
+
+
+
+
+
+
 
 
 

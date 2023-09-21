@@ -208,3 +208,43 @@ header h2 {
 		box-shadow: 0 4px 16px 0 rgba(22, 42, 90, 0.09);
 	}
 }
+
+.transparent-background{
+position:fixed;
+left:0;
+top:0;
+right:0;
+bottom:0;
+background:#000000cb;
+z-index: 1;
+}
+
+.modal-card{
+  position:absolute;
+  top:200px;
+  right: 41%;
+  z-index:1
+}
+
+.student-card-big{
+  height:400px;
+  width:350px;
+}
+
+.close-btn{
+  background-color: #FFF;
+  color:#ff0000;
+  position:absolute;
+  top:10px;
+  right:5px;
+  font-size: 20px;;
+  border:none
+}
+
+.close-btn:hover{
+  background-color: #ff1e1e;
+  color:#FFF
+}
+.close-btn:active{
+  outline:1px solid black;
+}
