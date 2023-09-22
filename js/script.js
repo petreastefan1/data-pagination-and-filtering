@@ -7,7 +7,7 @@ const searchBtn = document.querySelector(".search-btn")
 const pageContainer = document.querySelector(".page")
 const modalContainer = document.querySelector(".modal-container")
 let lastChangedEmail;
-let activePage
+let activePage = 1
 
 
 function createCard(data){
@@ -327,7 +327,8 @@ function saveModalCard(){
          last: `${studentName.value.split(" ")[1]}`,
          email: `${newEmailInpt.value}`
       }
-      updateStudent(lastChangedEmail,newStudent)
+      updateStudent(lastChangedEmail,newStudent);
+
 
 }
 
@@ -426,6 +427,7 @@ function updateStudent(email,newStudent){
    data[getDataIndexByEmail(email)].name.first = newStudent.first;
    data[getDataIndexByEmail(email)].name.last = newStudent.last;
    data[getDataIndexByEmail(email)].email = newStudent.email;
+
    attachPage(activePage);
 }
 
