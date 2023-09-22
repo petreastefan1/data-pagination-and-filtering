@@ -259,12 +259,12 @@ z-index: 1;
   height:30px;
   font-size: 25px;;
   background-color: #FFF;;
-  border:none
+  border:none;
+  padding:0px;
 }
 
 .arrow-right:active{
   border-radius:15px;
-  padding-bottom: 7px;
   color:#000000
 }
 
@@ -276,12 +276,12 @@ z-index: 1;
   height:30px;
   font-size: 25px;;
   background-color: #FFF;;
-  border:none
+  border:none;
+  padding:0px;
 }
 
 .arrow-left:active{
   border-radius:15px;
-  padding-bottom: 7px;
   color:#000000
 }
 

@@ -78,7 +78,7 @@ function createButtons(){
 
 
 
-      for(let i =1;i<=Math.floor(data.length/9);i++){
+      for(let i =1;i<=Math.ceil(data.length/9);i++){
 
          let button = createButton(i);
          button.className = `button-${i}`;
@@ -144,6 +144,44 @@ function findModalCardByEmail(email){
    }
    return card
 }
+
+function findModalCardNextSibling(email){
+
+   card = [];
+
+   for(let i = 0;i<data.length;i++){
+      if(data[i].email == email && i < data.length-1){
+         card.push(data[i+1])
+      }
+
+      else if(data[i].email == email && i == data.length-1){
+         card.push(data[i])
+      }
+   }
+   return card
+
+}
+
+
+function findModalCardPreviousSibling(email){
+
+   card = [];
+
+   for(let i = 0;i<data.length;i++){
+
+      if(data[i].email == email && i == data.length-data.length){
+         card.push(data[i])
+      }
+
+      else if(data[i].email == email && i < data.length-1){
+         card.push(data[i-1])
+      }
+
+   }
+   return card
+
+}
+
 
 
 
@@ -238,8 +276,10 @@ pageBtnsContainer.addEventListener("click",(e)=>{
    let parentClass = obj.parentNode.className
    let index=parentClass.toString();
    let pageNumber = index.slice(-1);
-   attachPage(pageNumber);
 
+   if(+pageNumber){
+      attachPage(pageNumber);
+   }
 
 })
 
@@ -258,13 +298,13 @@ searchBtn.addEventListener("click", ()=>{
 pageContainer.addEventListener("click",(e)=>{
 
    let obj = e.target;
-   let studentEmail = obj.textContent
-   let student = findModalCardByEmail(studentEmail)
-   classes = obj.classList
-
+   let studentEmail = obj.textContent;
+   let student = findModalCardByEmail(studentEmail);
+   let parentClass = obj.parentNode.classList
+   let classes = obj.classList;
    if(checkModalCardByEmail(studentEmail)){
-      attachModalCard(student)
-      modalContainer.classList.add("transparent-background")
+      attachModalCard(student);
+      modalContainer.classList.add("transparent-background");
    }
 
    if(classes.contains("close-btn") || obj.parentNode.classList.contains("close-btn")){
@@ -272,16 +312,24 @@ pageContainer.addEventListener("click",(e)=>{
       modalContainer.classList.remove("transparent-background")
    }
    
+   if(classes.contains("arrow-right") || parentClass.contains("arrow-right")){
+      let modalCardEmail = obj.parentNode.parentNode.firstElementChild.firstElementChild.lastElementChild.textContent;
+      let nextStudent = findModalCardNextSibling(modalCardEmail);
+      attachModalCard(nextStudent);
+   }
+
+   if(classes.contains("arrow-left") || parentClass.contains("arrow-left")){
+      let modalCardEmail = obj.parentNode.parentNode.firstElementChild.firstElementChild.lastElementChild.textContent;
+      let previousStudent = findModalCardPreviousSibling(modalCardEmail);
+      attachModalCard(previousStudent);
+
+   }
+
+
+
+
 
 })
-
-
-
-
-
-
-
-
 
 
 
