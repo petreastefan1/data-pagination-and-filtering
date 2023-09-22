@@ -147,9 +147,6 @@ function findModalCardByEmail(email){
 
 
 
-
-
-
 function createModalCard(data){
 
    let cardSection = document.createElement("section");
@@ -193,6 +190,26 @@ function createModalCard(data){
    closeBtn.className = "fa-solid fa-x"
    closeBtnContainer.appendChild(closeBtn)
    cardSection.appendChild(closeBtnContainer)
+
+   let arrowRightContainer = document.createElement("button");
+   arrowRightContainer.className = "arrow-right";
+
+   let arrowRight = document.createElement("i");
+   arrowRight.className = "fa-solid fa-arrow-right"
+   arrowRightContainer.appendChild(arrowRight);
+   cardSection.appendChild(arrowRightContainer)
+
+   let arrowLeftContainer = document.createElement("button");
+   arrowLeftContainer.className = "arrow-left";
+
+   let arrowLeft = document.createElement("i");
+   arrowLeft.className = "fa-solid fa-arrow-left"
+   arrowLeftContainer.appendChild(arrowLeft);
+   cardSection.appendChild(arrowLeftContainer)
+
+
+
+
    return cardSection
 }
 
@@ -247,12 +264,12 @@ pageContainer.addEventListener("click",(e)=>{
 
    if(checkModalCardByEmail(studentEmail)){
       attachModalCard(student)
-      modalContainer.className += " transparent-background"
+      modalContainer.classList.add("transparent-background")
    }
 
    if(classes.contains("close-btn") || obj.parentNode.classList.contains("close-btn")){
       attachModalCard("")
-      modalContainer.className -= " transparent-background"
+      modalContainer.classList.remove("transparent-background")
    }
    
 
