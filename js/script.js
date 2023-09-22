@@ -6,6 +6,9 @@ const nameInpt = document.getElementById("search")
 const searchBtn = document.querySelector(".search-btn")
 const pageContainer = document.querySelector(".page")
 const modalContainer = document.querySelector(".modal-container")
+let lastChangedEmail;
+let activePage
+
 
 function createCard(data){
 
@@ -120,6 +123,74 @@ function pagination(data,number,page){
 
 
 
+function createModalCard(data){
+
+   let cardSection = document.createElement("section");
+   cardSection.className = "modal-card";
+
+   let studentList = document.createElement("li");
+   studentList.className = `student-item cf student-card-big`
+   cardSection.appendChild(studentList)
+
+   let studentDetails = document.createElement("div");
+   studentDetails.className="student-details";
+   studentList.appendChild(studentDetails);
+
+   let studentImg = document.createElement("img");
+   studentImg.className="avatar";
+   studentImg.setAttribute("src",`${data.picture.large}`);
+   studentImg.setAttribute("alt","Profile Picture");
+   studentDetails.appendChild(studentImg);
+
+   let studentName = document.createElement("h3");
+   studentName.textContent = `${data.name.first} ${data.name.last}`;
+   studentDetails.appendChild(studentName);
+
+   let studentEmail = document.createElement("span");
+   studentEmail.className = "email";
+   studentEmail.textContent = `${data.email}`;
+   studentDetails.appendChild(studentEmail);
+
+   let joinedDetails = document.createElement("div");
+   joinedDetails.className="joined-details";
+      studentList.appendChild(joinedDetails);
+
+   let joinedDate = document.createElement("span");
+   joinedDate.className="date";
+   joinedDate.textContent = `Joined ${data.registered.date}`
+   joinedDetails.appendChild(joinedDate);
+
+   let closeBtnContainer = document.createElement("button");
+   closeBtnContainer.className = "close-btn";
+   let closeBtn = document.createElement("i");
+   closeBtn.className = "fa-solid fa-x"
+   closeBtnContainer.appendChild(closeBtn)
+   cardSection.appendChild(closeBtnContainer)
+
+   let arrowRightContainer = document.createElement("button");
+   arrowRightContainer.className = "arrow-right";
+
+   let arrowRight = document.createElement("i");
+   arrowRight.className = "fa-solid fa-arrow-right"
+   arrowRightContainer.appendChild(arrowRight);
+   cardSection.appendChild(arrowRightContainer)
+
+   let arrowLeftContainer = document.createElement("button");
+   arrowLeftContainer.className = "arrow-left";
+
+   let arrowLeft = document.createElement("i");
+   arrowLeft.className = "fa-solid fa-arrow-left"
+   arrowLeftContainer.appendChild(arrowLeft);
+   cardSection.appendChild(arrowLeftContainer)
+
+   let editBtn = document.createElement("button");
+   editBtn.className = "edit-btn";
+   editBtn.textContent = "Edit"
+   cardSection.appendChild(editBtn)
+
+
+   return cardSection
+}
 
 
 
@@ -183,75 +254,6 @@ function findModalCardPreviousSibling(email){
 }
 
 
-
-
-function createModalCard(data){
-
-   let cardSection = document.createElement("section");
-   cardSection.className = "modal-card";
-
-   let studentList = document.createElement("li");
-   studentList.className = "student-item cf student-card-big"
-   cardSection.appendChild(studentList)
-
-   let studentDetails = document.createElement("div");
-   studentDetails.className="student-details";
-   studentList.appendChild(studentDetails);
-
-   let studentImg = document.createElement("img");
-   studentImg.className="avatar";
-   studentImg.setAttribute("src",`${data.picture.large}`);
-   studentImg.setAttribute("alt","Profile Picture");
-   studentDetails.appendChild(studentImg);
-
-   let studentName = document.createElement("h3");
-   studentName.textContent = `${data.name.first} ${data.name.last}`;
-   studentDetails.appendChild(studentName);
-
-   let studentEmail = document.createElement("span");
-   studentEmail.className = "email";
-   studentEmail.textContent = `${data.email}`;
-   studentDetails.appendChild(studentEmail);
-
-   let joinedDetails = document.createElement("div");
-   joinedDetails.className="joined-details";
-      studentList.appendChild(joinedDetails);
-
-   let joinedDate = document.createElement("span");
-   joinedDate.className="date";
-   joinedDate.textContent = `Joined ${data.registered.date}`
-   joinedDetails.appendChild(joinedDate);
-
-   let closeBtnContainer = document.createElement("button");
-   closeBtnContainer.className = "close-btn";
-   let closeBtn = document.createElement("i");
-   closeBtn.className = "fa-solid fa-x"
-   closeBtnContainer.appendChild(closeBtn)
-   cardSection.appendChild(closeBtnContainer)
-
-   let arrowRightContainer = document.createElement("button");
-   arrowRightContainer.className = "arrow-right";
-
-   let arrowRight = document.createElement("i");
-   arrowRight.className = "fa-solid fa-arrow-right"
-   arrowRightContainer.appendChild(arrowRight);
-   cardSection.appendChild(arrowRightContainer)
-
-   let arrowLeftContainer = document.createElement("button");
-   arrowLeftContainer.className = "arrow-left";
-
-   let arrowLeft = document.createElement("i");
-   arrowLeft.className = "fa-solid fa-arrow-left"
-   arrowLeftContainer.appendChild(arrowLeft);
-   cardSection.appendChild(arrowLeftContainer)
-
-
-
-
-   return cardSection
-}
-
-
 function attachModalCard(arr){
    modalContainer.innerHTML="";
    for(let i = 0;i<arr.length;i++){
@@ -265,6 +267,72 @@ function attachPage(page){
    createCards(arr);
 }
 
+function editModalCard(){
+   let studentName = modalContainer.firstElementChild.firstElementChild.firstElementChild.firstElementChild.nextElementSibling
+   let newStudentInpt = document.createElement("input");
+   newStudentInpt.className = "student-name-inpt"
+   newStudentInpt.value = studentName.textContent
+   let studentDetails = document.querySelector(".student-details")
+   
+ 
+   let studentEmail = modalContainer.firstElementChild.firstElementChild.firstElementChild.lastElementChild;
+
+   lastChangedEmail=studentEmail.textContent;
+   let newEmailInpt = document.createElement("input");
+   newEmailInpt.className = "student-email-inpt"
+   newEmailInpt.value = studentEmail.textContent
+
+
+
+   studentDetails.insertBefore(newEmailInpt,studentEmail)
+   studentDetails.removeChild(studentEmail)
+
+   studentDetails.insertBefore(newStudentInpt,studentName)
+   studentDetails.removeChild(studentName)
+
+
+   let editBtn = document.querySelector(".edit-btn")
+   editBtn.textContent = "Save"
+   editBtn.classList.add("save-btn");
+   editBtn.classList.remove("edit-btn")
+
+}
+
+function saveModalCard(){
+      let studentName = modalContainer.firstElementChild.firstElementChild.firstElementChild.firstElementChild.nextElementSibling
+      let newStudentName = document.createElement("h3");
+      newStudentName.textContent = studentName.value
+      let studentDetails = document.querySelector(".student-details")
+
+
+      let newEmailInpt = modalContainer.firstElementChild.firstElementChild.firstElementChild.lastElementChild
+      let studentEmail = document.createElement("span");
+      studentEmail.className = "email"
+      studentEmail.textContent = newEmailInpt.value
+
+
+      studentDetails.insertBefore(studentEmail,newEmailInpt)
+      studentDetails.removeChild(newEmailInpt)
+
+      studentDetails.insertBefore(newStudentName,studentName)
+      studentDetails.removeChild(studentName)
+
+      let saveBtn = document.querySelector(".save-btn")
+      saveBtn.textContent = "Edit"
+      saveBtn.classList.add("edit-btn");
+      saveBtn.classList.remove("save-btn")
+
+      newStudent = {
+         first: `${studentName.value.split(" ")[0]}`,
+         last: `${studentName.value.split(" ")[1]}`,
+         email: `${newEmailInpt.value}`
+      }
+      updateStudent(lastChangedEmail,newStudent)
+
+}
+
+
+
 
 
 attachPage(1)
@@ -276,11 +344,11 @@ pageBtnsContainer.addEventListener("click",(e)=>{
    let parentClass = obj.parentNode.className
    let index=parentClass.toString();
    let pageNumber = index.slice(-1);
+   activePage = pageNumber;
 
    if(+pageNumber){
       attachPage(pageNumber);
    }
-
 })
 
 
@@ -289,7 +357,10 @@ pageBtnsContainer.addEventListener("click",(e)=>{
 searchBtn.addEventListener("click", ()=>{
 
    let students = findCardByName(nameInpt.value);
-   attachCards(students);
+   if(nameInpt.value.length>0){
+      attachCards(students); 
+   }
+
 
 })
 
@@ -302,6 +373,8 @@ pageContainer.addEventListener("click",(e)=>{
    let student = findModalCardByEmail(studentEmail);
    let parentClass = obj.parentNode.classList
    let classes = obj.classList;
+   let modalCardEmail = obj.parentNode.parentNode.firstElementChild.firstElementChild.lastElementChild
+
    if(checkModalCardByEmail(studentEmail)){
       attachModalCard(student);
       modalContainer.classList.add("transparent-background");
@@ -313,64 +386,47 @@ pageContainer.addEventListener("click",(e)=>{
    }
    
    if(classes.contains("arrow-right") || parentClass.contains("arrow-right")){
-      let modalCardEmail = obj.parentNode.parentNode.firstElementChild.firstElementChild.lastElementChild.textContent;
-      let nextStudent = findModalCardNextSibling(modalCardEmail);
+      let nextStudent = findModalCardNextSibling(modalCardEmail.textContent);
       attachModalCard(nextStudent);
    }
 
    if(classes.contains("arrow-left") || parentClass.contains("arrow-left")){
-      let modalCardEmail = obj.parentNode.parentNode.firstElementChild.firstElementChild.lastElementChild.textContent;
-      let previousStudent = findModalCardPreviousSibling(modalCardEmail);
+      let previousStudent = findModalCardPreviousSibling(modalCardEmail.textContent);
       attachModalCard(previousStudent);
-
    }
 
+   if(classes.contains("edit-btn")){
+      editModalCard()
+   }
 
+   else if(classes.contains("save-btn")){
+      saveModalCard()
 
-
+   }
 
 })
 
 
+function  getDataIndexByEmail(email){
 
 
+   for(let i = 0;i<data.length;i++){
+      if(data[i].email == email){
+         return i
+      }
+   }
+
+   return -1;
+   
+}
+
+function updateStudent(email,newStudent){
 
 
-
-// pageHeader.addEventListener("click",(e)=>{
-//    let obj = e.target
-//    let classes = obj.classList
-
-
-//    if(classes.contains("search-btn") || obj.parentNode.classList.contains("search-btn")){
-//       console.log(nameInpt.value)
-//    }
-
-// })
+   data[getDataIndexByEmail(email)].name.first = newStudent.first;
+   data[getDataIndexByEmail(email)].name.last = newStudent.last;
+   data[getDataIndexByEmail(email)].email = newStudent.email;
+   attachPage(activePage);
+}
 
 
-// function createSearchBar(){
-//    let label = document.createElement("label");
-//    label.setAttribute("for","search");
-//    label.className = "student-search"
-
-//    let searchInpt = document.createElement("input");
-//    searchInpt.id = "search";
-//    searchInpt.placeholder = "Search by name...";
-//    label.appendChild(searchInpt);
-
-//    let searchImg = document.createElement("img");
-//    searchImg.src = "img/icn-search.svg";
-//    searchImg.alt= "Search icon"
-
-//    let searchBtn = document.createElement("button");
-//    searchBtn.type = "button";
-//    searchBtn.className = "search-btn";
-//    searchBtn.appendChild(searchImg) ;
-//    label.appendChild(searchBtn)
-
-//    pageHeader.appendChild(label)
-
-
-
-// }
