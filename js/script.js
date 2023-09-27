@@ -14,7 +14,7 @@ function createCard(data){
 
    let studentCard = document.createElement("li");
    studentCard.className ="student-item";
-   studentCard.className += " cf"
+   studentCard.className += ` cf ${data.name.first}-${data.name.last}`
 
 
 
@@ -104,13 +104,13 @@ function findCardByName(name){
 }
 
 
-function attachCards(arr){
-   pageContainer.innerHTML="";
-   for(let i = 0;i<arr.length;i++){
-      pageContainer.appendChild(createCard(arr[i]));
+// function attachCards(arr){
+//    pageContainer.innerHTML="";
+//    for(let i = 0;i<arr.length;i++){
+//       pageContainer.appendChild(createCard(arr[i]));
 
-   }
-}
+//    }
+// }
 
 //tooo: primeste ca parametru un [12,32,43,54,65,76,76,23]  si un numar 6 =>[76,33]
 function pagination(data,number,page){
@@ -188,6 +188,11 @@ function createModalCard(data){
    editBtn.textContent = "Edit"
    cardSection.appendChild(editBtn)
 
+
+   let removeBtn = document.createElement("button")
+   removeBtn.className = "remove-btn";
+   removeBtn.textContent = "Remove";
+   cardSection.appendChild(removeBtn);
 
    return cardSection
 }
@@ -332,9 +337,20 @@ function saveModalCard(){
 
 }
 
+function newPagination(data,number,page){
+   let filer = [];
+   for(let i = number*(page-1);i<data.length && i<= number*page-1;i++){
+       filer.push(data[i]);
+   }
+   return filer;
+}
 
-
-
+// newPagination(data,9,1,data[2])
+// attachNewPage(1,data[2])
+function attachNewPage(newdata){
+   let arr = newPagination(newdata,9,activePage);
+   createCards(arr);
+}
 
 attachPage(1)
 createButtons()
@@ -405,6 +421,23 @@ pageContainer.addEventListener("click",(e)=>{
 
    }
 
+   if(classes.contains("remove-btn")){
+      let studentEmail = obj.parentNode.firstElementChild.firstElementChild.lastElementChild.textContent
+      let index = getDataIndexByEmail(studentEmail)
+      let removedStudent = removeStudent(index)
+      attachNewPage(removedStudent)
+      attachModalCard("")
+      modalContainer.classList.remove("transparent-background")
+
+      // METODA 2-sterge cardul dar ramane spatiu gol pe pagina
+      // let studentName = obj.parentNode.firstElementChild.firstElementChild.firstElementChild.nextElementSibling.textContent
+      // let studentClassName = studentName.split(" ").join("-")
+      // let studentCard = document.querySelector(`.${studentClassName}`);
+      // studentList.removeChild(studentCard)
+
+
+   }
+
 })
 
 
@@ -432,3 +465,12 @@ function updateStudent(email,newStudent){
 }
 
 
+function removeStudent(index){
+   for(let i = 0;i<data.length;i++){
+      if(data[i] == data[index]){
+         data.splice(i,1)
+      }
+ 
+   }
+   return data
+}

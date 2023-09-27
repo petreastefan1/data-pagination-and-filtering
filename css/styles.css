@@ -303,6 +303,26 @@ z-index: 1;
   color:#155ea8
 }
 
+.remove-btn{
+  font-size: 18px;
+  position:absolute;
+  right:90px;
+  bottom:140px;
+  width:80px;
+  height:30px;
+  background-color:#1E90FF;
+  color:#FFF;
+  border-radius:5px;
+  border:none
+
+}
+
+.remove-btn:active{
+  border:2px solid #155ea8;
+  color:#155ea8
+}
+
+
 .student-name-inpt{
   height:25px;
   font-size: 20px;
